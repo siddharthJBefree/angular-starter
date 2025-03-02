@@ -51,8 +51,32 @@
                   "maximumError": "8kB"
                 }
               ],
+              "progress": true,
               "outputHashing": "all",
               "serviceWorker": "ngsw-config.json"
+            },
+            "qa": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "progress": true,
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -72,10 +96,19 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-starter:build:production"
+              "buildTarget": "angular-starter:build:production",
+              "port": 4200,
+              "open": true
+            },
+            "qa": {
+              "buildTarget": "angular-starter:build:qa",
+              "port": 4200,
+              "open": true
             },
             "development": {
-              "buildTarget": "angular-starter:build:development"
+              "buildTarget": "angular-starter:build:development",
+              "port": 4200,
+              "open": true
             }
           },
           "defaultConfiguration": "development"

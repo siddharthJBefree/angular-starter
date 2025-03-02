@@ -16,7 +16,11 @@
     "git-fresh": "git removed-branches --prune -f",
     "check-memory-limit": "node -e 'console.log(v8.getHeapStatistics().heap_size_limit/(1024*1024))'",
     "increase-memory-limit": "setx NODE_OPTIONS \"--max-old-space-size=20480\"",
-    "prepare": "npm i @angular/cli@19.2.0 husky lint-staged prettier npm-run-all npkill git-removed-branches javascript-obfuscator -g && husky install"
+    "prepare": "npm i @angular/cli@19.2.0 husky lint-staged prettier npm-run-all npkill git-removed-branches javascript-obfuscator -g && husky install",
+    "s-prod": "ng serve --configuration=\"production\"",
+    "s-qa": "ng serve --configuration=\"qa\"",
+    "b-prod": "ng build --configuration=\"production\"  && git add -A && git commit -m \"Build Production\" && git push",
+    "b-qa": "ng build --configuration=\"qa\"  && git add -A && git commit -m \"Build QA\" && git push"
   },
   "private": true,
   "dependencies": {
