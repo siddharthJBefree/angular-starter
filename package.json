@@ -7,10 +7,16 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "posttest": "npm run format",
     "serve:ssr:angular-starter": "node dist/angular-starter/server/server.mjs",
     "lint": "ng lint",
+    "postlint": "npm run format",
     "format": "prettier --log-level log --write \"**/*.{html,yml,js,jsx,ts,tsx,css,json,scss,md,sh,sql,nginx,nginxconf}\" --config .prettierrc",
-    "analytics-disabled": "ng analytics disable --global && ng analytics disable "
+    "analytics-disabled": "ng analytics disable --global && ng analytics disable ",
+    "git-fresh": "git removed-branches --prune -f",
+    "check-memory-limit": "node -e 'console.log(v8.getHeapStatistics().heap_size_limit/(1024*1024))'",
+    "increase-memory-limit": "setx NODE_OPTIONS \"--max-old-space-size=20480\"",
+    "prepare": "npm i @angular/cli@19.2.0 husky lint-staged prettier npm-run-all npkill git-removed-branches javascript-obfuscator -g && husky install"
   },
   "private": true,
   "dependencies": {
@@ -43,6 +49,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lint-staged": "^15.4.3",
     "prettier": "^3.5.2",
     "prettier-plugin-nginx": "^1.0.3",
     "prettier-plugin-organize-imports": "^4.1.0",
@@ -50,5 +57,9 @@
     "prettier-plugin-sql": "^0.18.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "8.23.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
+    "**/*.{html,yml,js,jsx,ts,tsx,css,json,scss,md,sh,sql,nginx,nginxconf}": "prettier --write"
   }
 }
