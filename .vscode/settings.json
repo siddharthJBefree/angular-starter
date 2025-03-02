@@ -1,3 +1,15 @@
 {
-  "cSpell.words": ["bazel", "libpeerconnection", "loglevel", "nginxconf", "ngrx", "ngsw", "npkill", "remarkrc", "setx", "testem"]
+  "cSpell.words": [
+    "bazel",
+    "eslintcache",
+    "libpeerconnection",
+    "loglevel",
+    "nginxconf",
+    "ngrx",
+    "ngsw",
+    "npkill",
+    "remarkrc",
+    "setx",
+    "testem"
+  ]
 }
