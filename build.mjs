@@ -95,25 +95,50 @@ function autoIncrementVersion(version) {
   return `${major}.${minor}.${patch}`;
 }
 
-function getBuildVersionKey(project, env) {
-  return `${project}__${env}`;
+function tagExistsRemotely(tagName) {
+  try {
+    const result = execSync(`git ls-remote --tags origin refs/tags/${tagName}`, {encoding: 'utf-8'});
+    return result.trim().length > 0;
+  } catch {
+    return false;
+  }
+}
+
+function tagExistsLocally(tagName) {
+  try {
+    const tags = execSync('git tag', {encoding: 'utf-8'}).split('\n');
+    return tags.includes(tagName);
+  } catch {
+    return false;
+  }
+}
+
+function tagExists(tagName) {
+  return tagExistsLocally(tagName) || tagExistsRemotely(tagName);
 }
 
 function getNextVersionFromPackageJson(project, env) {
   const pkgPath = path.resolve('package.json');
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
 
-  const key = getBuildVersionKey(project, env);
-
+  const key = `${project}__${env}`;
   pkg.buildVersions = pkg.buildVersions || {};
-  const current = pkg.buildVersions[key] || '0.0.0';
-  const next = autoIncrementVersion(current);
 
-  pkg.buildVersions[key] = next;
+  let version = pkg.buildVersions[key] || '0.0.0';
+  let tagName = `${env}-${version}`;
+
+  // Keep incrementing version until the tag doesn't exist
+  while (tagExists(tagName)) {
+    version = autoIncrementVersion(version);
+    tagName = `${env}-${version}`;
+  }
+
+  // Save only the clean version to package.json
+  pkg.buildVersions[key] = version;
   writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-  return next;
-}
 
+  return version;
+}
 function updatePackageJsonVersion(newVersion) {
   const pkgPath = path.resolve('package.json');
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
