@@ -127,6 +127,20 @@ function createVersionFile(version, buildDate, commitHash, outPath) {
   writeFileSync(path.join(outPath, 'version.json'), JSON.stringify(versionData, null, 2));
 }
 
+function ensureCleanTag(tag) {
+  try {
+    const existingTags = execSync('git tag', {encoding: 'utf-8'}).split('\n');
+    if (existingTags.includes(tag)) {
+      console.warn(`⚠️ Tag ${tag} already exists. Removing it...`);
+      execSync(`git tag -d "${tag}"`, {stdio: 'inherit'});
+      execSync(`git push --delete origin "${tag}"`, {stdio: 'inherit'});
+    }
+  } catch (err) {
+    console.error(`❌ Failed during tag cleanup: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 async function main() {
   logStep('Reading angular.json...');
   const config = getAngularConfig();
@@ -165,6 +179,7 @@ async function main() {
   const tagName = `${selectedEnv}-${newVersion}`;
 
   logStep('Committing and tagging in git...');
+  ensureCleanTag(tagName);
   exec('git add -A');
   exec(`git commit -m "${commitMsg}"`);
   exec('git push');

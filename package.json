@@ -1,6 +1,6 @@
 {
   "name": "angular-starter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -77,7 +77,6 @@
     "**/*.{html,yml,js,jsx,ts,tsx,css,json,scss,md,sh,sql,nginx,nginxconf}": "prettier --write"
   },
   "buildVersions": {
-    "angular-starter__production": "0.0.1",
-    "angular-starter__qa": "0.0.1"
+    "angular-starter__production": "0.0.2"
   }
 }
