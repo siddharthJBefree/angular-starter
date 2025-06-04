@@ -95,6 +95,25 @@ function autoIncrementVersion(version) {
   return `${major}.${minor}.${patch}`;
 }
 
+function getBuildVersionKey(project, env) {
+  return `${project}__${env}`;
+}
+
+function getNextVersionFromPackageJson(project, env) {
+  const pkgPath = path.resolve('package.json');
+  const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
+
+  const key = getBuildVersionKey(project, env);
+
+  pkg.buildVersions = pkg.buildVersions || {};
+  const current = pkg.buildVersions[key] || '0.0.0';
+  const next = autoIncrementVersion(current);
+
+  pkg.buildVersions[key] = next;
+  writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+  return next;
+}
+
 function updatePackageJsonVersion(newVersion) {
   const pkgPath = path.resolve('package.json');
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
@@ -132,8 +151,7 @@ async function main() {
   spawnWithOutput('ng', ['build', `--configuration=${selectedEnv}`]);
 
   logStep('Reading and incrementing version...');
-  const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
-  const newVersion = autoIncrementVersion(pkg.version);
+  const newVersion = getNextVersionFromPackageJson(project, selectedEnv);
   const buildDate = getBuildDate();
   const commitHash = getCommitHash();
 

@@ -1,6 +1,6 @@
 {
   "name": "angular-starter",
-  "version": "0.0.3",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -75,5 +75,8 @@
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "**/*.{html,yml,js,jsx,ts,tsx,css,json,scss,md,sh,sql,nginx,nginxconf}": "prettier --write"
+  },
+  "buildVersions": {
+    "angular-starter__production": "0.0.1"
   }
 }
