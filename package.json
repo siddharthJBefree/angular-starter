@@ -1,6 +1,6 @@
 {
   "name": "angular-starter",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -78,6 +78,6 @@
   },
   "buildVersions": {
     "angular-starter__production": "0.0.1",
-    "angular-starter__qa": "0.0.2"
+    "angular-starter__qa": "0.0.1"
   }
 }
