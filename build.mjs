@@ -125,12 +125,12 @@ function getNextVersionFromPackageJson(project, env) {
   pkg.buildVersions = pkg.buildVersions || {};
 
   let version = pkg.buildVersions[key] || '0.0.0';
-  let tagName = `${env}-${version}`;
+  let tagName = `${project}-${env}-${version}`;
 
   // Keep incrementing version until the tag doesn't exist
   while (tagExists(tagName)) {
     version = autoIncrementVersion(version);
-    tagName = `${env}-${version}`;
+    tagName = `${project}-${env}-${version}`;
   }
 
   // Save only the clean version to package.json
@@ -201,7 +201,7 @@ async function main() {
   updatePackageJsonVersion(newVersion);
 
   const commitMsg = `Build Created ${selectedEnv} ${newVersion} ${buildDate} ${commitHash}`;
-  const tagName = `${selectedEnv}-${newVersion}`;
+  const tagName = `${project}-${selectedEnv}-${newVersion}`;
 
   logStep('Committing and tagging in git...');
   ensureCleanTag(tagName);
